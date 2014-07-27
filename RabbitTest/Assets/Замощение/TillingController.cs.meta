@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e0f9ba13ef9847545aa6f79a14be023d
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - DarkRectangle: {fileID: 100000, guid: 75190c9cd30949349a58e240141eb7d1, type: 2}
+  - LightRectangle: {fileID: 100000, guid: 60fa39cf67ba4af4bb5a08a34c550c5c, type: 2}
+  - DarkMovableRectangle: {fileID: 100000, guid: 247ae06d68027994bbff385a1cb7d146,
+      type: 2}
+  - LightMovableRectangle: {fileID: 100000, guid: 5e820a02c1c77d14a86e8e79bf35c533,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
