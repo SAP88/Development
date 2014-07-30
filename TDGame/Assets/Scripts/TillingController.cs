@@ -10,9 +10,10 @@ public class Field
     public int[] Row;
 }
 
-//[ExecuteInEditMode]
+[ExecuteInEditMode]
 public class TillingController : MonoBehaviour
 {
+    
     private bool IsInitializeSuccessful = false;
     public GameObject PlacableDark;
     public GameObject PlacableLight;
@@ -37,9 +38,22 @@ public class TillingController : MonoBehaviour
     //Prefabs
     //http://anwell.me/articles/unity3d-flappy-bird/
 
+    public void Reset()
+    {
+        var fieldObjects = GameObject.FindGameObjectsWithTag("FieldObject");
+        if (fieldObjects != null)
+        {
+            foreach (var fo in GameObject.FindGameObjectsWithTag("FieldObject"))
+            {
+                GameObject.Destroy(fo);
+            }
+        }
+    }
+
 	// Use this for initialization
 	void Start () 
     {
+        Reset();
         if(GameField == null || GameField.Length == 0 || GameField[0].Row == null)
         {
             Debug.LogError("IncorrectSize");
@@ -160,7 +174,11 @@ public class TillingController : MonoBehaviour
 	private GameObject DrawPerimeter(int i, int j, int angle)
 	{
 		var @return = (GameObject)Object.Instantiate(EdgePerimeter, new Vector2(transform.position.x - j * EdgePerimeter.renderer.bounds.size.x,
-		                                                                        transform.position.y - i * EdgePerimeter.renderer.bounds.size.y), Quaternion.identity);
+                    transform.position.y - i * EdgePerimeter.renderer.bounds.size.y), Quaternion.identity);
+
+        @return.transform.parent = transform.parent;
+
+        @return.tag = "FieldObject";
 		@return.name = string.Format("({0},{1}) _Perimeter", i, j);
         //@return.transform.Rotate(0, angle, 0);
         @return.transform.Rotate(0, 0, angle);
@@ -170,6 +188,10 @@ public class TillingController : MonoBehaviour
     {
         var @return = (GameObject)Object.Instantiate(EdgeBottom, new Vector2(transform.position.x - j * MovableDark.renderer.bounds.size.x,
                     transform.position.y - i * MovableDark.renderer.bounds.size.y), Quaternion.identity);
+
+        @return.transform.parent = transform.parent;
+
+        @return.tag = "FieldObject";
         @return.name = string.Format("({0},{1}) _Rock ", i, j);
         return @return;
     }
@@ -179,6 +201,10 @@ public class TillingController : MonoBehaviour
         
         var @return = (GameObject)Object.Instantiate(MovableDark, new Vector2(transform.position.x - j * MovableDark.renderer.bounds.size.x,
                     transform.position.y - i * MovableDark.renderer.bounds.size.y), Quaternion.identity);
+
+        @return.transform.parent = transform.parent;
+
+        @return.tag = "FieldObject";
         @return.name = string.Format("({0},{1}) _moveableDark ", i, j);
         return @return;
     }
@@ -187,6 +213,10 @@ public class TillingController : MonoBehaviour
     {
         var @return = (GameObject)Object.Instantiate(MovableLight, new Vector2(transform.position.x - j * MovableLight.renderer.bounds.size.x,
                     transform.position.y - i * MovableLight.renderer.bounds.size.y), Quaternion.identity);
+
+        @return.transform.parent = transform.parent;
+
+        @return.tag = "FieldObject";
         @return.name = string.Format("({0},{1}) _moveableLight", i, j);
         return @return;
     }
@@ -195,6 +225,10 @@ public class TillingController : MonoBehaviour
     {
         var @return = (GameObject)Object.Instantiate(PlacableDark, new Vector2(transform.position.x - j * PlacableDark.renderer.bounds.size.x,
                     transform.position.y - i * PlacableDark.renderer.bounds.size.y), Quaternion.identity);
+
+        @return.transform.parent = transform.parent;
+
+        @return.tag = "FieldObject";
         @return.name = string.Format("({0},{1}) _placeableDark ", i, j);
         return @return;
     }
@@ -203,6 +237,10 @@ public class TillingController : MonoBehaviour
     {
         var @return = (GameObject)Object.Instantiate(PlacableLight, new Vector2(transform.position.x - j * PlacableLight.renderer.bounds.size.x,
                     transform.position.y - i * PlacableLight.renderer.bounds.size.y), Quaternion.identity);
+
+        @return.transform.parent = transform.parent;
+
+        @return.tag = "FieldObject";
         @return.name = string.Format("({0},{1}) _placeableLight ", i, j);
         return @return;
     }
