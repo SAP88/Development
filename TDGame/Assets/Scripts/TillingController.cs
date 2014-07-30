@@ -45,7 +45,7 @@ public class TillingController : MonoBehaviour
         {
             foreach (var fo in GameObject.FindGameObjectsWithTag("FieldObject"))
             {
-                GameObject.Destroy(fo);
+				GameObject.DestroyImmediate(fo);
             }
         }
     }
