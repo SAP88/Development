@@ -2,9 +2,10 @@
 using System.Collections;
 
 //[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(BoxCollider2D), typeof(CircleCollider2D))]
 public class DragAndDrop : MonoBehaviour
 {
-    float speed = 0.1f;
+    
 
     Vector2 offset;
     void Update()

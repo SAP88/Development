@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
+using Assets.Scripts;
 
 [System.Serializable]
 public class Field
@@ -38,16 +39,35 @@ public class TillingController : MonoBehaviour
     //Prefabs
     //http://anwell.me/articles/unity3d-flappy-bird/
 
+    #region Common Events (Start, Reset, OnMouseUp etc..)
+
+    /// <summary>
+    /// ТОлько для EditMode-а ([ExecuteInEditMode])
+    /// </summary>
     public void Reset()
     {
         var fieldObjects = GameObject.FindGameObjectsWithTag("FieldObject");
         if (fieldObjects != null)
         {
-            foreach (var fo in GameObject.FindGameObjectsWithTag("FieldObject"))
+            foreach (var fo in fieldObjects)
             {
 				GameObject.DestroyImmediate(fo);
             }
         }
+
+        fieldObjects = GameObject.FindGameObjectsWithTag("FieldObjectPosition");
+        if (fieldObjects != null)
+        {
+            foreach (var fo in fieldObjects)
+            {
+				GameObject.DestroyImmediate(fo);
+            }
+        }
+    }
+
+    void OnLevelWasLoaded(int level)
+    {
+        
     }
 
 	// Use this for initialization
@@ -57,6 +77,7 @@ public class TillingController : MonoBehaviour
         if(GameField == null || GameField.Length == 0 || GameField[0].Row == null)
         {
             Debug.LogError("IncorrectSize");
+            return;
         }
 
         StringBuilder sError = new StringBuilder();
@@ -70,48 +91,62 @@ public class TillingController : MonoBehaviour
             }
         }
 
-        if(!(IsInitializeSuccessful = sError.Length == 0)) return;
-
-        string tmp = "";
-        for (int i = 0; i < GameField.Length; i++)
+        if (!(IsInitializeSuccessful = sError.Length == 0))
         {
-            tmp += GameField[i].Row[0].ToString();
+            Debug.LogError(sError);
+            return;
         }
-        Debug.Log(tmp);
+
+        GameLevelController.Instance.UpdateGameField(GameField);
 
         for (int i = 0; i < GameField.Length ; i++)
         for (int j = 0; j < GameField[i].Row.Length; j++)
         {
             bool divI = i % 2 == 0;
             bool divJ = j % 2 == 0;
-            if (divJ)
-            {
-                //Dark
-                if (divI)
-                {
-                    DarkDrawConditions(i, j);
+            if (divJ) {
+                //Логика для шахматных клеток тёмных
+                if (divI) { 
+                    DarkDrawConditions(i, j); 
+                } else { 
+                    LightDrawConditions(i, j); 
                 }
-                else
-                {
+            } else {
+                //Логика для шахматных клеток светлых
+                if (divI) {
                     LightDrawConditions(i, j);
-                }
-            }
-            else
-            {
-                //light
-                if (divI)
-                {
-                    LightDrawConditions(i, j);
-                }
-                else
-                {
+                } else {
                     DarkDrawConditions(i, j);
                 }
             }
         }
-        
 	}
 
+    void FixedUpdate()
+    {
+        if (!IsInitializeSuccessful)
+        {
+            //UnInitialized();
+            return;
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (!IsInitializeSuccessful)
+        {
+            return;
+        }
+
+    }
+
+    #endregion
+
+    #region Логика создания игровых шашечек
+    /// <summary>
+    /// Для светлых шахматных клеток рисует квадраты
+    /// </summary>
     private void LightDrawConditions(int i, int j)
     {
         if (GameField[i].Row[j] == MOVEABLESPACE)
@@ -125,6 +160,9 @@ public class TillingController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Для темных шахматных клеток рисует квадраты
+    /// </summary>
     private void DarkDrawConditions(int i, int j)
     {
         if (GameField[i].Row[j] == MOVEABLESPACE)
@@ -138,6 +176,11 @@ public class TillingController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Рисует декорацию в i , j
+    /// </summary>
+    /// <param name="i"></param>
+    /// <param name="j"></param>
     private void DrawBound(int i, int j)
     {
         if(CheckBound(i + 1, j) && CheckIsMovableSpace(i + 1, j))
@@ -170,43 +213,38 @@ public class TillingController : MonoBehaviour
     {
         return 0 <= i && i < GameField.Length && 0 <= j && j < GameField[i].Row.Length;
     }
+    #endregion
 
-	private GameObject DrawPerimeter(int i, int j, int angle)
+    #region ОТРИСОВКА декоративных объектов
+    private GameObject DrawPerimeter(int i, int j, int angle)
 	{
 		var @return = (GameObject)Object.Instantiate(EdgePerimeter, new Vector2(transform.position.x - j * EdgePerimeter.renderer.bounds.size.x,
                     transform.position.y - i * EdgePerimeter.renderer.bounds.size.y), Quaternion.identity);
 
-        @return.transform.parent = transform.parent;
-
-        @return.tag = "FieldObject";
 		@return.name = string.Format("({0},{1}) _Perimeter", i, j);
-        //@return.transform.Rotate(0, angle, 0);
+        
         @return.transform.Rotate(0, 0, angle);
-		return @return;
+        return MarkTagParent(@return, "FieldObject");
 	}
     private GameObject DrawRocks(int i, int j)
     {
         var @return = (GameObject)Object.Instantiate(EdgeBottom, new Vector2(transform.position.x - j * MovableDark.renderer.bounds.size.x,
                     transform.position.y - i * MovableDark.renderer.bounds.size.y), Quaternion.identity);
 
-        @return.transform.parent = transform.parent;
-
-        @return.tag = "FieldObject";
         @return.name = string.Format("({0},{1}) _Rock ", i, j);
-        return @return;
+        return MarkTagParent(@return, "FieldObject");
     }
+    #endregion
 
+    #region ОТРИСОВКА объектов поля (Шашечки)
     private GameObject DrawMovableDark(int i, int j)
     {
         
         var @return = (GameObject)Object.Instantiate(MovableDark, new Vector2(transform.position.x - j * MovableDark.renderer.bounds.size.x,
                     transform.position.y - i * MovableDark.renderer.bounds.size.y), Quaternion.identity);
 
-        @return.transform.parent = transform.parent;
-
-        @return.tag = "FieldObject";
         @return.name = string.Format("({0},{1}) _moveableDark ", i, j);
-        return @return;
+        return MarkTagParent(@return, "FieldObjectPosition");
     }
 
     private GameObject DrawMovableLight(int i, int j)
@@ -214,11 +252,8 @@ public class TillingController : MonoBehaviour
         var @return = (GameObject)Object.Instantiate(MovableLight, new Vector2(transform.position.x - j * MovableLight.renderer.bounds.size.x,
                     transform.position.y - i * MovableLight.renderer.bounds.size.y), Quaternion.identity);
 
-        @return.transform.parent = transform.parent;
-
-        @return.tag = "FieldObject";
         @return.name = string.Format("({0},{1}) _moveableLight", i, j);
-        return @return;
+        return MarkTagParent(@return, "FieldObjectPosition");
     }
 
     private GameObject DrawPlaceableDark(int i, int j)
@@ -226,11 +261,8 @@ public class TillingController : MonoBehaviour
         var @return = (GameObject)Object.Instantiate(PlacableDark, new Vector2(transform.position.x - j * PlacableDark.renderer.bounds.size.x,
                     transform.position.y - i * PlacableDark.renderer.bounds.size.y), Quaternion.identity);
 
-        @return.transform.parent = transform.parent;
-
-        @return.tag = "FieldObject";
         @return.name = string.Format("({0},{1}) _placeableDark ", i, j);
-        return @return;
+        return MarkGameFieldObject(MarkTagParent(@return, "FieldObjectPosition"), i, j);
     }
 
     private GameObject DrawPlaceableLight(int i, int j)
@@ -238,34 +270,25 @@ public class TillingController : MonoBehaviour
         var @return = (GameObject)Object.Instantiate(PlacableLight, new Vector2(transform.position.x - j * PlacableLight.renderer.bounds.size.x,
                     transform.position.y - i * PlacableLight.renderer.bounds.size.y), Quaternion.identity);
 
-        @return.transform.parent = transform.parent;
-
-        @return.tag = "FieldObject";
+        
         @return.name = string.Format("({0},{1}) _placeableLight ", i, j);
+        return MarkGameFieldObject(MarkTagParent(@return, "FieldObjectPosition"), i, j);
+    }
+    #endregion
+
+    private GameObject MarkTagParent(GameObject @return, string tag)
+    {
+        @return.transform.parent = transform.parent;
+        @return.tag = tag;
         return @return;
     }
 
-    void FixedUpdate()
+    private GameObject MarkGameFieldObject(GameObject gameObj, int i, int j)
     {
-        if (!IsInitializeSuccessful)
-        {
-            UnInitialized();
-            return;
-        }
-    }
-	
-	// Update is called once per frame
-	void Update () {
-	    if (!IsInitializeSuccessful)
-        {
-            return;
-        }
-
-	}
-
-    private void UnInitialized()
-    {
-        
+        var so = gameObj.AddComponent("GameFieldScript");
+        //so.SendMessage("SetCoordinates", new object[] { i, j });
+        var boxCollider = gameObj.AddComponent("BoxCollider2D") as BoxCollider2D;
+        return gameObj;
     }
 }
 

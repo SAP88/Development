@@ -1,13 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\DragAndDrop.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\TowerScripts\CommonTowerScript.cs">
     <Files>
-      <File FileName="Assets\Scripts\DragAndDrop.cs" Line="37" Column="1" />
-      <File FileName="Assets\Scripts\TillingController.cs" Line="51" Column="6" />
+      <File FileName="Assets\Scripts\TowerScripts\CommonTowerScript.cs" Line="54" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="D:\GitRepository\Development\TDGame\Assets\Scripts\TowerScripts\CommonTowerScript.cs" line="33" />
+      <Breakpoint file="D:\GitRepository\Development\TDGame\Assets\Scripts\TowerScripts\CommonTowerScript.cs" line="25" />
+      <Breakpoint file="D:\GitRepository\Development\TDGame\Assets\Scripts\TowerScripts\CommonTowerScript.cs" line="30" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="Assets\Scripts\TowerScripts\CommonTowerScript.cs" line="21" offsetX="893" offsetY="340" expression="ShootingRadius" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
 </Properties>
