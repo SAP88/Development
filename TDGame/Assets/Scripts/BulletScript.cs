@@ -3,6 +3,7 @@ using System.Collections;
 
 public class BulletScript : MonoBehaviour
 {
+    public float Damage;
     public Transform Target;
     public float Speed = 10f;
     
@@ -22,17 +23,27 @@ public class BulletScript : MonoBehaviour
     {
         if(coll.gameObject == Target.gameObject)
         {
+            var health = coll.gameObject.GetComponent<MonsterHealth>();
+            if (health != null)
+            {
+                coll.gameObject.GetComponent<MonsterHealth>().DoDamage(Damage);
+            }
+            else
+            {
+                Debug.Log("Монст должен иметь скрипт MonsterHealth");
+            }
             Destroy(gameObject);
         }
     }
 
-    void OnCollisionStay2D(Collision2D coll)
-    {
-        if (coll.gameObject == Target.gameObject)
-        {
-            Destroy(gameObject);
-        }
-    }
+    //void OnCollisionStay2D(Collision2D coll)
+    //{
+    //    if (coll.gameObject == Target.gameObject)
+    //    {
+    //        DoDamage();
+    //    }
+    //}
+
 }
 
 /*

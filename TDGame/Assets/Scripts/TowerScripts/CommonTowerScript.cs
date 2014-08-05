@@ -37,7 +37,9 @@ public class CommonTowerScript : MonoBehaviour {
             newBullet.GetComponent<SpriteRenderer>().sortingLayerName = "Пули";
             newBullet.AddComponent(typeof(Rigidbody2D));
             newBullet.AddComponent(typeof(BulletScript));
-            newBullet.GetComponent<BulletScript>().Target = TargetEnemy.transform;
+            var bulletScript = newBullet.GetComponent<BulletScript>();
+            bulletScript.Target = TargetEnemy.transform;
+            bulletScript.Damage = 1.0f;
             newBullet.rigidbody2D.gravityScale = 0;
             //newBullet.rigidbody2D.isKinematic = true;
             
@@ -59,6 +61,7 @@ public class CommonTowerScript : MonoBehaviour {
     }
 
     public float targetHeading;
+
 
 	// Update is called once per frame
 	void Update () {
