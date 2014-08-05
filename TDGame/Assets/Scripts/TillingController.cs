@@ -27,6 +27,8 @@ public class TillingController : MonoBehaviour
     //Должны смотреть вниз
     public GameObject EdgePerimeter;
 
+    public GameObject Respawn;
+
     //public int HorizontalCount;
     //public int VerticalCount;
 
@@ -34,6 +36,8 @@ public class TillingController : MonoBehaviour
 
     private const int MOVEABLESPACE = 0;
     private const int PLACEABLESPACE = 1;
+    private const int RESPAWN = 100;
+    private const int ESCAPE = 200;
 
     //!!!!!!!!!!!!!!!!!!!!!!!!
     //Prefabs
@@ -102,6 +106,7 @@ public class TillingController : MonoBehaviour
         for (int i = 0; i < GameField.Length ; i++)
         for (int j = 0; j < GameField[i].Row.Length; j++)
         {
+            MainGameObjectsCheck(i, j);
             bool divI = i % 2 == 0;
             bool divJ = j % 2 == 0;
             if (divJ) {
@@ -121,6 +126,16 @@ public class TillingController : MonoBehaviour
             }
         }
 	}
+
+    private void MainGameObjectsCheck(int i, int j)
+    {
+        if (GameField[i].Row[j] == RESPAWN)
+        {
+            DrawRespawn(i, j);
+        }
+    }
+
+    
 
     void FixedUpdate()
     {
@@ -165,6 +180,7 @@ public class TillingController : MonoBehaviour
     /// </summary>
     private void DarkDrawConditions(int i, int j)
     {
+        
         if (GameField[i].Row[j] == MOVEABLESPACE)
         {
             DrawMovableLight(i, j);
@@ -212,6 +228,18 @@ public class TillingController : MonoBehaviour
     private bool CheckBound(int i, int j)
     {
         return 0 <= i && i < GameField.Length && 0 <= j && j < GameField[i].Row.Length;
+    }
+    #endregion
+
+    #region ОТРИСОВКА респауна, выхода
+    private GameObject DrawRespawn(int i, int j)
+    {
+        var @return = (GameObject)Object.Instantiate(Respawn, new Vector2(transform.position.x - j * Respawn.renderer.bounds.size.x,
+                    transform.position.y - i * Respawn.renderer.bounds.size.y), Quaternion.identity);
+
+        @return.name = string.Format("({0},{1}) MonstersRespawn", i, j);
+
+        return @return;
     }
     #endregion
 

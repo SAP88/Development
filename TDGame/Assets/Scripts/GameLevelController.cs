@@ -71,28 +71,28 @@ namespace Assets.Scripts
             }
         }
 
-        private ActionType _currentSelectedTower = ActionType.None;
-        public ActionType CurrentSelectedTower
-        {
-            get { return _currentSelectedTower; }
-            set 
-            { 
-                _currentSelectedTower = value; 
-                FirePropertyChanged("CurrentSelectedTower"); 
-            }
-        }
+        //private ActionType _currentSelectedTower = ActionType.None;
+        //public ActionType CurrentSelectedTower
+        //{
+        //    get { return _currentSelectedTower; }
+        //    set 
+        //    { 
+        //        _currentSelectedTower = value; 
+        //        FirePropertyChanged("CurrentSelectedTower"); 
+        //    }
+        //}
 
-        public GameObject CurrentSelectedTowerGameObject
-        {
-            get;
-            set;
-        }
+        //public GameObject CurrentSelectedTowerGameObject
+        //{
+        //    get;
+        //    set;
+        //}
 
-        public GameObject CurrentSelectedTowerBullet
-        {
-            get;
-            set;
-        }
+        //public GameObject CurrentSelectedTowerBullet
+        //{
+        //    get;
+        //    set;
+        //}
 
 
         public event PropertyChangedEventHandler PropertyChanged;

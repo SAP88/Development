@@ -14,7 +14,7 @@ public class CommonTowerScript : MonoBehaviour {
 
     //Does Unity null all references to a GameObject after Object.Destroy is called on it? If so, how?
     //http://answers.unity3d.com/questions/10032/does-unity-null-all-references-to-a-gameobject-aft.html
-	void FixedUpdate()
+	void Update()
     {
         if (TargetEnemy == null)
         {
@@ -61,12 +61,6 @@ public class CommonTowerScript : MonoBehaviour {
     }
 
     public float targetHeading;
-
-
-	// Update is called once per frame
-	void Update () {
-       
-	}   
 
     //void OnTriggerStay2D(Collider other)
     //{

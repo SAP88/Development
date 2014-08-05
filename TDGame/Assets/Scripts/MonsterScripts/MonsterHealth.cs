@@ -6,8 +6,8 @@ public class MonsterHealth : MonoBehaviour {
     public float CurrentHealth;
     public float MaxHealth;
 
-    public Texture2D TEST;
-    public Texture2D TEST2;
+    public Texture2D FullHp;
+    public Texture2D EmptyHp;
 
     void Start()
     {
@@ -25,7 +25,7 @@ public class MonsterHealth : MonoBehaviour {
     }
 
     private Texture2D _progressBarEmpty = null;
-    Texture2D ProgressBarEmpty
+    private Texture2D ProgressBarEmpty
     {
         get
         {
@@ -38,7 +38,7 @@ public class MonsterHealth : MonoBehaviour {
      }
 
     private Texture2D _progressBarFull = null;
-    Texture2D ProgressBarFull
+    private Texture2D ProgressBarFull
     {
         get
         {
@@ -50,8 +50,11 @@ public class MonsterHealth : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Ожидается что ширина полоски с жизнями равна высоте монстра
+    /// </summary>
     private Vector2? _size = null;
-    Vector2 TextureSize
+    private Vector2 TextureSize
     {
         get
         {
@@ -65,48 +68,19 @@ public class MonsterHealth : MonoBehaviour {
 
     void OnGUI()
     {
-        //http://answers.unity3d.com/questions/11892/how-would-you-make-an-energy-bar-loading-progress.html
         var pos = Camera.main.WorldToScreenPoint(this.transform.position);
         pos.y = Screen.height - pos.y; //pos в центре монстра
 
-        pos.y = pos.y - this.renderer.bounds.size.y / 2 - TextureSize.y;
-        pos.x = pos.x - this.renderer.bounds.size.x / 2;
+        //pos.y = pos.y - this.renderer.bounds.size.y / 2 - TextureSize.y;
+        //pos.x = pos.x - this.renderer.bounds.size.x / 2;
 
-        //var pos = this.transform.position;
-
-        //GUI.BeginGroup(new Rect(pos.x, pos.y, TextureSize.x, TextureSize.y));
-        //    GUI.Box(new Rect(0, 0, TextureSize.x, TextureSize.y), ProgressBarEmpty);
-
-        //    // draw the filled-in part:
-        //    GUI.BeginGroup(new Rect(0, 0, TextureSize.x * BarDisplay, TextureSize.y));
-        //        GUI.Box(new Rect(0, 0, TextureSize.x, TextureSize.y), ProgressBarFull);
-
-        //    GUI.EndGroup();
-
-        GUI.EndGroup();
+        pos.y = pos.y - TextureSize.x / 2 - TextureSize.y;
+        pos.x = pos.x - TextureSize.x / 2;
 
         GUI.BeginGroup(new Rect(pos.x, pos.y, TextureSize.x, TextureSize.y));
-        GUI.Box(new Rect(0, 0, TextureSize.x, TextureSize.y), TEST2);
-
-        // draw the filled-in part:
-        GUI.BeginGroup(new Rect(0, 0, TextureSize.x * BarDisplay, TextureSize.y));
-        GUI.Box(new Rect(0, 0, TextureSize.x, TextureSize.y), TEST);
-
+            GUI.DrawTexture(new Rect(0, 0, TextureSize.x * BarDisplay, TextureSize.y), FullHp);
+            GUI.DrawTexture(new Rect(0, 0, TextureSize.x, TextureSize.y), EmptyHp);
         GUI.EndGroup();
-
-        GUI.EndGroup();
-
-        //GUI.BeginGroup(new Rect(pos.x, pos.y, TextureSize.x + 50, TextureSize.y + 50));
-        //GUI.Box(new Rect(0, 0, TextureSize.x, TextureSize.y + 50), TEST2);
-
-        //// draw the filled-in part:
-        //GUI.BeginGroup(new Rect(0, 0, TextureSize.x * BarDisplay + 50, TextureSize.y + 50));
-        //GUI.Box(new Rect(0, 0, TextureSize.x + 50, TextureSize.y + 50), TEST);
-
-        //GUI.EndGroup();
-
-        //GUI.EndGroup();
-
 
     }
 
@@ -116,7 +90,7 @@ public class MonsterHealth : MonoBehaviour {
     {
         if(CurrentHealth - Damage < 0)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         else
         {

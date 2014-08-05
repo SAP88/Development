@@ -24,7 +24,7 @@ public class GameFieldScript : MonoBehaviour {
 
     void OnMouseDown()
     {
-        if (GameLevelController.Instance.CurrentSelectedTower == ActionType.None)
+        if (TowerCreateScript.CurrentAction == ActionType.None)
         {
             return;
         }
@@ -35,9 +35,16 @@ public class GameFieldScript : MonoBehaviour {
             return;
         }
 
-        Tower = (GameObject)GameObject.Instantiate(GameLevelController.Instance.CurrentSelectedTowerGameObject, transform.position, transform.rotation);
-        var towerScript = (CommonTowerScript)Tower.GetComponent(typeof(CommonTowerScript));
-        towerScript.Bullet = GameLevelController.Instance.CurrentSelectedTowerBullet;
+        var newTower = TowerCreateScript.CreateTower();
+        if(newTower == null)
+        {
+            Debug.LogError("Не удалось создать башенку типа \"" + TowerCreateScript.CurrentAction + "\"");
+            return;
+        }
+
+        newTower.transform.position = this.transform.position;
+        newTower.transform.rotation = this.transform.rotation;
+        //Tower = (GameObject)GameObject.Instantiate(newTower, transform.position, transform.rotation);
     }
 
     public void SetCoordinates(object[] coords)
