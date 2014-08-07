@@ -49,14 +49,17 @@
      <Compile Include="Assets\Scripts\Autosave.cs" />
      <Compile Include="Assets\Scripts\BulletScript.cs" />
      <Compile Include="Assets\Scripts\DragAndDrop.cs" />
+     <Compile Include="Assets\Scripts\ExitScript.cs" />
      <Compile Include="Assets\Scripts\GameFieldScript.cs" />
      <Compile Include="Assets\Scripts\GameLevelController.cs" />
      <Compile Include="Assets\Scripts\Helper.cs" />
-     <Compile Include="Assets\Scripts\MonsterScripts\Monster1.cs" />
+     <Compile Include="Assets\Scripts\MonsterScripts\MonsterAI_Movement.cs" />
      <Compile Include="Assets\Scripts\MonsterScripts\MonsterHealth.cs" />
+     <Compile Include="Assets\Scripts\RespawnScript.cs" />
      <Compile Include="Assets\Scripts\TillingController.cs" />
      <Compile Include="Assets\Scripts\TowerCreateScript.cs" />
      <Compile Include="Assets\Scripts\TowerScripts\CommonTowerScript.cs" />
+     <Compile Include="Assets\Scripts\WaveAlgorithm.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

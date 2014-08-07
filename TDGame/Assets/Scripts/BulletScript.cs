@@ -11,7 +11,7 @@ public class BulletScript : MonoBehaviour
     {
         if(Target != null)
         {
-            var offset = this.transform.position - Target.position;
+            //var offset = this.transform.position - Target.position;
             this.transform.position += (Target.position - this.transform.position) * Speed * Time.deltaTime;
             return;
         }

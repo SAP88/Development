@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Monster1 : MonoBehaviour {
+public class ExitScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -10,6 +10,8 @@ public class Monster1 : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+	    
 	}
+
+    
 }

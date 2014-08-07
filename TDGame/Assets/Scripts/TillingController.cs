@@ -11,10 +11,35 @@ public class Field
     public int[] Row;
 }
 
+[System.Serializable]
+public enum EnemyType
+{
+    Монстр1
+}
+
+
+[System.Serializable]
+public class EnemyGroup
+{
+    //public Enemies[] Enemies;
+    public int Count;
+    public EnemyType EnemyType;
+    public float CreationTimeout;
+}
+
+[System.Serializable]
+public class EnemyWave
+{
+    public EnemyGroup[] GroupWave;
+    public float NextWaveTimeout;
+}
+
 [ExecuteInEditMode]
 public class TillingController : MonoBehaviour
 {
-    
+    //public float SpawnCountDown; // С каким интервалом
+    public float BeginAfter; // Через скока монстры должны пойти
+
     private bool IsInitializeSuccessful = false;
     public GameObject PlacableDark;
     public GameObject PlacableLight;
@@ -28,16 +53,14 @@ public class TillingController : MonoBehaviour
     public GameObject EdgePerimeter;
 
     public GameObject Respawn;
+    public GameObject Escape;
+
 
     //public int HorizontalCount;
     //public int VerticalCount;
 
     public Field[] GameField;
-
-    private const int MOVEABLESPACE = 0;
-    private const int PLACEABLESPACE = 1;
-    private const int RESPAWN = 100;
-    private const int ESCAPE = 200;
+    public EnemyWave[] Waves;
 
     //!!!!!!!!!!!!!!!!!!!!!!!!
     //Prefabs
@@ -67,11 +90,29 @@ public class TillingController : MonoBehaviour
 				GameObject.DestroyImmediate(fo);
             }
         }
+
+        fieldObjects = GameObject.FindGameObjectsWithTag("Exit");
+        if (fieldObjects != null)
+        {
+            foreach (var fo in fieldObjects)
+            {
+                GameObject.DestroyImmediate(fo);
+            }
+        }
+
+        fieldObjects = GameObject.FindGameObjectsWithTag("Spawn");
+        if (fieldObjects != null)
+        {
+            foreach (var fo in fieldObjects)
+            {
+                GameObject.DestroyImmediate(fo);
+            }
+        }
     }
 
     void OnLevelWasLoaded(int level)
     {
-        
+        GameLevelController.Instance.GameFieldPosition = null;
     }
 
 	// Use this for initialization
@@ -125,35 +166,21 @@ public class TillingController : MonoBehaviour
                 }
             }
         }
+
+        GameLevelController.Instance.GameFieldPosition = this.transform;
 	}
 
     private void MainGameObjectsCheck(int i, int j)
     {
-        if (GameField[i].Row[j] == RESPAWN)
+        
+        if (GameField[i].Row[j] == Helper.RESPAWN)
         {
             DrawRespawn(i, j);
         }
-    }
-
-    
-
-    void FixedUpdate()
-    {
-        if (!IsInitializeSuccessful)
+        else if (GameField[i].Row[j] == Helper.ESCAPE)
         {
-            //UnInitialized();
-            return;
+            DrawEscape(i, j);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (!IsInitializeSuccessful)
-        {
-            return;
-        }
-
     }
 
     #endregion
@@ -164,14 +191,20 @@ public class TillingController : MonoBehaviour
     /// </summary>
     private void LightDrawConditions(int i, int j)
     {
-        if (GameField[i].Row[j] == MOVEABLESPACE)
-        {
-            DrawMovableDark(i, j);
-        }
-        else if (GameField[i].Row[j] == PLACEABLESPACE)
+        if (GameField[i].Row[j] == Helper.PLACEABLESPACE)
         {
             DrawPlaceableDark(i, j);
             DrawBound(i, j);
+            
+        }
+        else if (false)
+        {
+            //Другие декоры
+        }
+        else 
+        {
+            //(GameField[i].Row[j] == MOVEABLESPACE)
+            DrawMovableDark(i, j);
         }
     }
 
@@ -180,16 +213,21 @@ public class TillingController : MonoBehaviour
     /// </summary>
     private void DarkDrawConditions(int i, int j)
     {
-        
-        if (GameField[i].Row[j] == MOVEABLESPACE)
+        if (GameField[i].Row[j] == Helper.PLACEABLESPACE)
+        { 
+            DrawPlaceableLight(i, j);
+            DrawBound(i, j);   
+        } 
+        else if(false) 
         {
+            //Другие декоры
+        }
+        else
+        {
+            //(GameField[i].Row[j] == MOVEABLESPACE)
             DrawMovableLight(i, j);
         }
-        else if (GameField[i].Row[j] == PLACEABLESPACE)
-        {
-            DrawPlaceableLight(i, j);
-            DrawBound(i, j);
-        }
+        
     }
 
     /// <summary>
@@ -206,7 +244,7 @@ public class TillingController : MonoBehaviour
 
 		if(CheckBound(i, j + 1) && CheckIsMovableSpace(i, j + 1))
 		{
-			DrawPerimeter(i, j + 1, -90);
+			DrawPerimeter(i, j + 1, 90);
 		}
 
         if (CheckBound(i - 1, j) && CheckIsMovableSpace(i - 1, j))
@@ -216,13 +254,13 @@ public class TillingController : MonoBehaviour
 
         if (CheckBound(i, j - 1) && CheckIsMovableSpace(i, j - 1))
         {
-            DrawPerimeter(i, j - 1, 90);
+            DrawPerimeter(i, j - 1, -90);
         }
     }
 
     private bool CheckIsMovableSpace(int i, int j)
     {
-        return GameField[i].Row[j] == MOVEABLESPACE;
+        return GameField[i].Row[j] == Helper.MOVEABLESPACE || GameField[i].Row[j] == Helper.ESCAPE || GameField[i].Row[j] == Helper.RESPAWN;
     }
 
     private bool CheckBound(int i, int j)
@@ -232,12 +270,36 @@ public class TillingController : MonoBehaviour
     #endregion
 
     #region ОТРИСОВКА респауна, выхода
+
+    private GameObject DrawEscape(int i, int j)
+    {
+        var @return = (GameObject)Object.Instantiate(Escape, new Vector2(transform.position.x + j * Escape.renderer.bounds.size.x,
+                    transform.position.y - i * Escape.renderer.bounds.size.y), Quaternion.identity);
+
+        @return.name = string.Format("({0},{1}) MonstersEscape", i, j);
+
+        @return.tag = "Exit";
+        //var respScript = @return.AddComponent<RespawnScript>();
+        //respScript.GameField = GameField;
+        //respScript.BeginAfter = BeginAfter;
+        //respScript.SpawnCountDown = SpawnCountDown;
+
+        return @return;
+    }
+
     private GameObject DrawRespawn(int i, int j)
     {
-        var @return = (GameObject)Object.Instantiate(Respawn, new Vector2(transform.position.x - j * Respawn.renderer.bounds.size.x,
+        var @return = (GameObject)Object.Instantiate(Respawn, new Vector2(transform.position.x + j * Respawn.renderer.bounds.size.x,
                     transform.position.y - i * Respawn.renderer.bounds.size.y), Quaternion.identity);
 
         @return.name = string.Format("({0},{1}) MonstersRespawn", i, j);
+
+        var respScript = @return.AddComponent<RespawnScript>();
+        respScript.GameField = GameField;
+        respScript.BeginAfter = BeginAfter;
+        //respScript.SpawnCountDown = SpawnCountDown;
+        respScript.Waves = Waves;
+        @return.tag = "Spawn";
 
         return @return;
     }
@@ -246,7 +308,7 @@ public class TillingController : MonoBehaviour
     #region ОТРИСОВКА декоративных объектов
     private GameObject DrawPerimeter(int i, int j, int angle)
 	{
-		var @return = (GameObject)Object.Instantiate(EdgePerimeter, new Vector2(transform.position.x - j * EdgePerimeter.renderer.bounds.size.x,
+		var @return = (GameObject)Object.Instantiate(EdgePerimeter, new Vector2(transform.position.x + j * EdgePerimeter.renderer.bounds.size.x,
                     transform.position.y - i * EdgePerimeter.renderer.bounds.size.y), Quaternion.identity);
 
 		@return.name = string.Format("({0},{1}) _Perimeter", i, j);
@@ -256,7 +318,7 @@ public class TillingController : MonoBehaviour
 	}
     private GameObject DrawRocks(int i, int j)
     {
-        var @return = (GameObject)Object.Instantiate(EdgeBottom, new Vector2(transform.position.x - j * MovableDark.renderer.bounds.size.x,
+        var @return = (GameObject)Object.Instantiate(EdgeBottom, new Vector2(transform.position.x + j * MovableDark.renderer.bounds.size.x,
                     transform.position.y - i * MovableDark.renderer.bounds.size.y), Quaternion.identity);
 
         @return.name = string.Format("({0},{1}) _Rock ", i, j);
@@ -268,7 +330,7 @@ public class TillingController : MonoBehaviour
     private GameObject DrawMovableDark(int i, int j)
     {
         
-        var @return = (GameObject)Object.Instantiate(MovableDark, new Vector2(transform.position.x - j * MovableDark.renderer.bounds.size.x,
+        var @return = (GameObject)Object.Instantiate(MovableDark, new Vector2(transform.position.x + j * MovableDark.renderer.bounds.size.x,
                     transform.position.y - i * MovableDark.renderer.bounds.size.y), Quaternion.identity);
 
         @return.name = string.Format("({0},{1}) _moveableDark ", i, j);
@@ -277,7 +339,7 @@ public class TillingController : MonoBehaviour
 
     private GameObject DrawMovableLight(int i, int j)
     {
-        var @return = (GameObject)Object.Instantiate(MovableLight, new Vector2(transform.position.x - j * MovableLight.renderer.bounds.size.x,
+        var @return = (GameObject)Object.Instantiate(MovableLight, new Vector2(transform.position.x + j * MovableLight.renderer.bounds.size.x,
                     transform.position.y - i * MovableLight.renderer.bounds.size.y), Quaternion.identity);
 
         @return.name = string.Format("({0},{1}) _moveableLight", i, j);
@@ -286,7 +348,7 @@ public class TillingController : MonoBehaviour
 
     private GameObject DrawPlaceableDark(int i, int j)
     {
-        var @return = (GameObject)Object.Instantiate(PlacableDark, new Vector2(transform.position.x - j * PlacableDark.renderer.bounds.size.x,
+        var @return = (GameObject)Object.Instantiate(PlacableDark, new Vector2(transform.position.x + j * PlacableDark.renderer.bounds.size.x,
                     transform.position.y - i * PlacableDark.renderer.bounds.size.y), Quaternion.identity);
 
         @return.name = string.Format("({0},{1}) _placeableDark ", i, j);
@@ -295,7 +357,7 @@ public class TillingController : MonoBehaviour
 
     private GameObject DrawPlaceableLight(int i, int j)
     {
-        var @return = (GameObject)Object.Instantiate(PlacableLight, new Vector2(transform.position.x - j * PlacableLight.renderer.bounds.size.x,
+        var @return = (GameObject)Object.Instantiate(PlacableLight, new Vector2(transform.position.x + j * PlacableLight.renderer.bounds.size.x,
                     transform.position.y - i * PlacableLight.renderer.bounds.size.y), Quaternion.identity);
 
         

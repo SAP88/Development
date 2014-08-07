@@ -55,5 +55,10 @@ namespace Assets.Scripts
 
             return null;
         }
+
+        public const int MOVEABLESPACE = 0;
+        public const int PLACEABLESPACE = 1;
+        public const int RESPAWN = 100;
+        public const int ESCAPE = 200;
     }
 }

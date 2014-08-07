@@ -6,8 +6,7 @@ using Assets.Scripts;
 /// Поля по которым будут жмякать что бы добавить башенку
 /// </summary>
 public class GameFieldScript : MonoBehaviour {
-    private int i = -1;
-    private int j = -1;
+
     private GameObject Tower = null;
 	// Use this for initialization
 	void Start () {
@@ -42,20 +41,10 @@ public class GameFieldScript : MonoBehaviour {
             return;
         }
 
+        var size = newTower.GetComponent<SpriteRenderer>().bounds.size;
         newTower.transform.position = this.transform.position;
+
+        newTower.transform.position = new Vector2(newTower.transform.position.x - size.x / 2, newTower.transform.position.y - size.y / 2);
         newTower.transform.rotation = this.transform.rotation;
-        //Tower = (GameObject)GameObject.Instantiate(newTower, transform.position, transform.rotation);
-    }
-
-    public void SetCoordinates(object[] coords)
-    {
-        if (coords == null)
-        {
-            Debug.LogError("coords is null for " + name);
-            return;
-        }
-
-        i = (int)coords[0];
-        j = (int)coords[1];
     }
 }

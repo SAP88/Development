@@ -2,7 +2,8 @@
 using System.Collections;
 
 
-public class MonsterHealth : MonoBehaviour {
+public class MonsterHealth : MonoBehaviour 
+{
     public float CurrentHealth;
     public float MaxHealth;
 
@@ -20,7 +21,7 @@ public class MonsterHealth : MonoBehaviour {
     {
         get
         {
-            return CurrentHealth / (MaxHealth / 100) / 100;
+            return CurrentHealth / MaxHealth;
         }
     }
 

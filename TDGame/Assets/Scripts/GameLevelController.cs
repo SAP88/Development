@@ -13,13 +13,13 @@ namespace Assets.Scripts
 	    CreateCommonTower,
 	}
 
-    public class FieldInfo
-    {
-        public GameObject Tower { get; set; }
-        public int SourceValue { get; set; }
-    }
+    //public class FieldInfo
+    //{
+    //    public GameObject Tower { get; set; }
+    //    public int SourceValue { get; set; }
+    //}
 
-    public class GameLevelController : INotifyPropertyChanged
+    public class GameLevelController // : INotifyPropertyChanged
     {
         private GameLevelController()
         {
@@ -40,11 +40,17 @@ namespace Assets.Scripts
             }
         }
 
-        public FieldInfo[,] GameField
+        public int[,] GameField
         {
             get;
             private set;
         }
+
+        public Transform GameFieldPosition { get; set; }
+
+        public IList<Vector2> ShortestPath { get; private set; }
+        public Vector2 Respawn { get; private set; }
+        public Vector2 Escape { get; private set; }
 
         public void UpdateGameField(Field[] gField)
         {
@@ -56,52 +62,27 @@ namespace Assets.Scripts
             int w = gField[0].Row.Length;
             int h = gField.Length;
 
-            try
+            GameField = new int[h, w];
+
+            int[] walls = new int[] { Helper.PLACEABLESPACE };
+            //List<int> walls = new List<int>();
+            for (int i = 0; i < h; i++)
+            for (int j = 0; j < w; j++)
             {
-                GameField = new FieldInfo[h, w];
-                for (int i = 0; i < h; i++)
-                    for (int j = 0; j < w; j++)
-                    {
-                        GameField[i, j] = new FieldInfo() { SourceValue = gField[i].Row[j] };
-                    }
+                GameField[i, j] = gField[i].Row[j];
+
+                if(gField[i].Row[j] == Helper.RESPAWN)
+                {
+                    Respawn = new Vector2(j, i);
+                }
+                else if (gField[i].Row[j] == Helper.ESCAPE)
+                {
+                    Escape = new Vector2(j, i);
+                }
             }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
+
+            ShortestPath = WaveAlgorithm.FindShortestPath(GameField, walls, (int)Respawn.x, (int)Respawn.y, (int)Escape.x, (int)Escape.y);
         }
 
-        //private ActionType _currentSelectedTower = ActionType.None;
-        //public ActionType CurrentSelectedTower
-        //{
-        //    get { return _currentSelectedTower; }
-        //    set 
-        //    { 
-        //        _currentSelectedTower = value; 
-        //        FirePropertyChanged("CurrentSelectedTower"); 
-        //    }
-        //}
-
-        //public GameObject CurrentSelectedTowerGameObject
-        //{
-        //    get;
-        //    set;
-        //}
-
-        //public GameObject CurrentSelectedTowerBullet
-        //{
-        //    get;
-        //    set;
-        //}
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void FirePropertyChanged(string propName)
-        {
-            if(PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propName));
-            }
-        }
     }
 }

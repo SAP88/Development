@@ -57,11 +57,8 @@ public class TowerCreateScript : MonoBehaviour
                 newTowerSprite.sprite =
                     Sprite.Create(tower1, new Rect(0, 0, tower1.width, tower1.height), new Vector2(0, 0));
                 
-                //var towerScript = (CommonTowerScript)Tower.GetComponent(typeof(CommonTowerScript));
                 comTowerScript.Bullet = TowerCreateScript.CurrentTowerBullets;
-                //var thisTexture = this.GetComponent<SpriteRenderer>().sprite.texture;
-                //newTowerSprite.sprite = Sprite.Create(thisText, new Rect(0, 0, thisText.width, thisText.height), new Vector2(0, 0));
-
+                
                 break;
         }
 
