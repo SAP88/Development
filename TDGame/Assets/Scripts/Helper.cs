@@ -42,19 +42,6 @@ namespace Assets.Scripts
             }
         }
 
-        public static GameObject CreateTower(ActionType action, string name)
-        {
-            switch(action)
-            {
-                case ActionType.CreateCommonTower:
-                    var tower = new GameObject(name, typeof(ScriptableObject), typeof(SpriteRenderer));
-                    Texture2D t = new Texture2D(50, 50);
-                    break;
-                    
-            }
-
-            return null;
-        }
 
         public const int MOVEABLESPACE = 0;
         public const int PLACEABLESPACE = 1;

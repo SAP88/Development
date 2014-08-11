@@ -83,9 +83,6 @@ public class TowerCreateScript : MonoBehaviour
             CurrentTowerBullets = TowerBullet;
             CurrentTowerInfo = new TowerInfo { CountDown = CountDown, ShootingRadius = ShootingRadius };
             Helper.ApplySelected(this);
-
-            
-            
         }
     }
 
