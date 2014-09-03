@@ -1,0 +1,196 @@
+fileFormatVersion: 2
+guid: a2df9f7bbc5f7bb48a5336e3fb6892b1
+TextureImporter:
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Z_HEADSHOOT_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 262
+        width: 68
+        height: 103
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Z_HEADSHOOT_1
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 259
+        width: 63
+        height: 106
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Z_HEADSHOOT_2
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 260
+        width: 59
+        height: 105
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Z_HEADSHOOT_3
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 256
+        width: 69
+        height: 107
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Z_HEADSHOOT_4
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 250
+        width: 78
+        height: 115
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Z_HEADSHOOT_8
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 250
+        width: 84
+        height: 115
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Z_HEADSHOOT_11
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 244
+        width: 90
+        height: 112
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Z_HEADSHOOT_14
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 107
+        width: 99
+        height: 108
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Z_HEADSHOOT_15
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 105
+        width: 107
+        height: 107
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Z_HEADSHOOT_18
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 101
+        width: 121
+        height: 103
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Z_HEADSHOOT_22
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 101
+        width: 122
+        height: 98
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Z_HEADSHOOT_26
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 9
+        width: 126
+        height: 90
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Z_HEADSHOOT_28
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 4
+        width: 121
+        height: 94
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Z_HEADSHOOT_30
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 2
+        width: 121
+        height: 95
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Z_HEADSHOOT_32
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 0
+        width: 126
+        height: 97
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
