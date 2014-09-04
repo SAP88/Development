@@ -1,15 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FieldNodeScript : MonoBehaviour {
+public class FieldNodeScript : MonoBehaviour 
+{
+    
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
+    void Update()
+    {
+        if (LevelController.SelectedDefender != null && this.IsAnyTouch())
+        {
+            var gObject = (GameObject)GameObject.Instantiate(LevelController.SelectedDefender);
+            gObject.transform.position = this.transform.position;
+            LevelController.SelectedDefender = null;
+        }
+    }
+
+
+    
 	// Update is called once per frame
-	void Update () {
-	
-	}
+	//void Update () 
+    //{
+    //    if(this.IsAnyTouch())
+    //    {
+    //        Debug.Log("Pressed");
+    //    }
+	//}
 }
